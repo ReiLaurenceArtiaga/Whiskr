@@ -107,11 +107,20 @@ nav.sticky{
     background-color: transparent;
     border: none;
     cursor: pointer;
+    padding: 10px 20px;  /* Add padding */
+    border-radius: 8px;  /* Optional: adds rounded corners */
+}
+
+.btn-2 p {
+    margin: 0;  /* Remove any default margins */
+    line-height: 1;  /* Ensure text is vertically centered */
 }
 
 .btn-2 i{
-    font-size: 32px;
+    font-size: 24px;  /* Reduce icon size slightly */
     transition: all 0.2s ease-out;
+    display: flex;
+    align-items: center;
 }
 
 .btn-2:hover i{
@@ -119,7 +128,7 @@ nav.sticky{
 }
 
 .btn-2:hover{
-    gap: 10px;
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
 /* Hero Section */
@@ -530,6 +539,181 @@ footer{
 
 .copyright{
     margin-top: 20px;
+}
+
+/* Add these to your existing style.css */
+
+/* Nav Right Container */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Cart Icon Styles */
+.cart-icon-container {
+    position: relative;
+}
+
+.cart-icon-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: var(--black);
+    cursor: pointer;
+    padding: 10px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-count {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: var(--accent);
+    color: white;
+    font-size: 12px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* Cart Dropdown */
+.cart-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 320px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.cart-dropdown.active {
+    display: block;
+}
+
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.cart-header h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.cart-close {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #666;
+}
+
+.cart-items {
+    padding: 15px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+.cart-item-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.cart-item-details {
+    flex-grow: 1;
+}
+
+.cart-item-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.cart-item-price {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.cart-item-remove {
+    color: #ff4444;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.cart-footer {
+    padding: 15px;
+    border-top: 1px solid #eee;
+}
+
+.cart-total {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.checkout-btn {
+    width: 100%;
+    padding: 10px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.checkout-btn:hover {
+    opacity: 0.9;
+}
+
+/* Empty Cart State */
+.cart-empty {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .cart-dropdown {
+        position: fixed;
+        top: 70px;
+        right: 10px;
+        left: 10px;
+        width: auto;
+        max-height: calc(100vh - 80px);
+    }
 }
 
 @media (max-width: 1024px) and (min-width: 0px) {

@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="shop.js" />
     <script src="index.js" defer></script>
+    <script src="shop.js" defer></script>
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
@@ -12,484 +15,555 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <title>Whiskr | Shop</title>
-    <style>
-      .shop-container {
-        padding: 150px 50px 50px 50px;
-      }
-
-      .shop-header {
-        text-align: center;
-        margin-bottom: 50px;
-      }
-
-      .shop-header h1 {
-        font-size: 64px;
-        font-weight: 900;
-        margin-bottom: 20px;
-      }
-
-      .shop-header p {
-        font-size: 24px;
-        font-weight: 400;
-      }
-
-      .categories {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        margin-bottom: 40px;
-      }
-
-      .category-btn {
-        padding: 10px 20px;
-        border: 2px solid var(--black);
-        border-radius: 12px;
-        font-size: 18px;
-        font-weight: 600;
-        background: white;
-        cursor: pointer;
-        transition: all 0.2s ease-out;
-      }
-
-      .category-btn:hover,
-      .category-btn.active {
-        background: var(--accent);
-        color: white;
-        border-color: var(--accent);
-      }
-
-      .products-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 30px;
-        padding: 20px;
-      }
-
-      .product-card {
-        border: 1px solid #ddd;
-        border-radius: 12px;
-        padding: 20px;
-        text-align: center;
-        transition: all 0.3s ease;
-      }
-
-      .product-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      }
-
-      .product-image {
-        width: 200px;
-        height: 200px;
-        margin: 0 auto 20px;
-        background: #f5f5f5;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .product-image img {
-        max-width: 80%;
-        max-height: 80%;
-        object-fit: contain;
-      }
-
-      .product-title {
-        font-size: 20px;
-        font-weight: 700;
-        margin-bottom: 10px;
-      }
-
-      .product-price {
-        font-size: 24px;
-        font-weight: 800;
-        color: var(--accent);
-        margin-bottom: 20px;
-      }
-
-      .product-buttons {
-        display: flex;
-        gap: 10px;
-        justify-content: center;
-      }
-
-      .cart-count {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: var(--accent);
-        color: white;
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        cursor: pointer;
-      }
-
-      /* Cart Modal Styles */
-      .cart-modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        right: 0;
-        width: 400px;
-        height: 100vh;
-        background: white;
-        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-        padding: 20px;
-        overflow-y: auto;
-      }
-
-      .cart-modal.active {
-        display: block;
-      }
-
-      .cart-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #ddd;
-      }
-
-      .cart-close {
-        cursor: pointer;
-        font-size: 24px;
-      }
-
-      .cart-items {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-      }
-
-      .cart-item {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        padding: 15px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        margin-bottom: 10px;
-      }
-
-      .cart-item-image {
-        width: 60px;
-        height: 60px;
-        border-radius: 8px;
-        margin-right: 15px;
-      }
-
-      .cart-item-details {
-        flex-grow: 1;
-      }
-
-      .cart-item-title {
-        font-weight: 600;
-        margin-bottom: 5px;
-      }
-
-      .cart-item-price {
-        color: var(--accent);
-        font-weight: 600;
-      }
-
-      .cart-item-remove {
-        color: #ff4444;
-        cursor: pointer;
-        padding: 5px;
-      }
-
-      .cart-item-quantity {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-top: 10px;
-        width: 100%;
-      }
-
-      .quantity-btn {
-        width: 30px;
-        height: 30px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        background: white;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .quantity-btn:hover {
-        background: #f5f5f5;
-      }
-
-      .quantity-input {
-        width: 50px;
-        height: 30px;
-        text-align: center;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-      }
-
-      .cart-summary {
-        margin-top: 20px;
-        padding-top: 20px;
-        border-top: 1px solid #ddd;
-      }
-
-      .cart-total {
-        display: flex;
-        justify-content: space-between;
-        font-size: 20px;
-        font-weight: 700;
-        margin-bottom: 20px;
-      }
-
-      .checkout-btn {
-        width: 100%;
-        padding: 15px;
-        background: var(--accent);
-        color: white;
-        border: none;
-        border-radius: 8px;
-        font-size: 18px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s ease;
-      }
-
-      .checkout-btn:hover {
-        opacity: 0.9;
-      }
-
-      .cart-empty {
-        text-align: center;
-        padding: 40px 20px;
-        color: #666;
-      }
-
-      /* Checkout Form Styles */
-      .checkout-form {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: white;
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
-        width: 90%;
-        max-width: 500px;
-        z-index: 1001;
-      }
-
-      .checkout-form.active {
-        display: block;
-      }
-
-      .form-group {
-        margin-bottom: 20px;
-      }
-
-      .form-group label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: 600;
-      }
-
-      .form-group input,
-      .form-group select {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        font-size: 16px;
-      }
-
-      .modal-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 1000;
-      }
-
-      .modal-overlay.active {
-        display: block;
-      }
-
-      .order-summary {
-        background: #f9f9f9;
-        padding: 15px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-      }
-
-      .order-summary-item {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 10px;
-      }
-
-      .success-message {
-        text-align: center;
-        padding: 20px;
-        background: #e8f5e9;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        display: none;
-      }
-
-      @media (max-width: 768px) {
-        .shop-header h1 {
-          font-size: 36px;
-        }
-        .shop-header p {
-          font-size: 18px;
-        }
-        .categories {
-          flex-wrap: wrap;
-        }
-        .products-grid {
-          grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        }
-        .cart-modal {
-          width: 100%;
-        }
-      }
-    </style>
+    <title>Whiskr | Shop</title>    
   </head>
+  <style>
+    .shop-container {
+      padding: 150px 50px 50px 50px;
+    }
+
+    .shop-header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .shop-header h1 {
+      font-size: 64px;
+      font-weight: 900;
+      margin-bottom: 20px;
+    }
+
+    .shop-header p {
+      font-size: 24px;
+      font-weight: 400;
+    }
+
+    .categories {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .category-btn {
+      padding: 10px 20px;
+      border: 2px solid var(--black);
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: 600;
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s ease-out;
+    }
+
+    .category-btn:hover,
+    .category-btn.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+      padding: 20px;
+    }
+
+    .product-card {
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-image {
+      width: 200px;
+      height: 200px;
+      margin: 0 auto 20px;
+      background: #f5f5f5;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .product-image img {
+      max-width: 80%;
+      max-height: 80%;
+      object-fit: contain;
+    }
+
+    .product-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .product-price {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .product-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .cart-count {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--accent);
+      color: white;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* Cart Modal Styles */
+    .cart-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 400px;
+      height: 100vh;
+      background: white;
+      box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .cart-modal.active {
+      display: block;
+    }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .cart-close {
+      cursor: pointer;
+      font-size: 24px;
+    }
+
+    .cart-items {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .cart-item {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .cart-item-image {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      margin-right: 15px;
+    }
+
+    .cart-item-details {
+      flex-grow: 1;
+    }
+
+    .cart-item-title {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .cart-item-price {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .cart-item-remove {
+      color: #ff4444;
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    .cart-item-quantity {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    .quantity-btn {
+      width: 30px;
+      height: 30px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .quantity-btn:hover {
+      background: #f5f5f5;
+    }
+
+    .quantity-input {
+      width: 50px;
+      height: 30px;
+      text-align: center;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .cart-summary {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #ddd;
+    }
+
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      padding: 15px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .checkout-btn:hover {
+      opacity: 0.9;
+    }
+
+    .cart-empty {
+      text-align: center;
+      padding: 40px 20px;
+      color: #666;
+    }
+
+    /* Checkout Form Styles */
+    .checkout-form {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+      width: 90%;
+      max-width: 500px;
+      z-index: 1001;
+    }
+
+    .checkout-form.active {
+      display: block;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+    }
+
+    .modal-overlay.active {
+      display: block;
+    }
+
+    .order-summary {
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .order-summary-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .success-message {
+      text-align: center;
+      padding: 20px;
+      background: #e8f5e9;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .shop-header h1 {
+        font-size: 36px;
+      }
+      .shop-header p {
+        font-size: 18px;
+      }
+      .categories {
+        flex-wrap: wrap;
+      }
+      .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      }
+      .cart-modal {
+        width: 100%;
+      }
+    }
+  </style>
   <body>
     <!-- Navbar -->
     <nav>
       <a href="index.html" class="brand">
-        <h1>Whis<b class="accent">kr.</b></h1>
+          <h1>Whis<b class="accent">kr.</b></h1>
       </a>
       <div class="menu">
-        <div class="btn">
-          <i class="fas fa-times close-btn"></i>
-        </div>
-        <a href="index.html">Home</a>
-        <a href="index.html#pets">Pets</a>
-        <a href="shop.html" class="active">Shop</a>
-        <a href="index.html#requirements">Requirements</a>
-        <a href="index.html#about">About</a>
-        <a href="index.html#stories">Stories</a>
+          <div class="btn">
+              <i class="fas fa-times close-btn"></i>
+          </div>
+          <a href="index.html">Home</a>
+          <a href="index.html#pets">Pets</a>
+          <a href="shop.html" class="active">Shop</a>
+          <a href="index.html#requirements">Requirements</a>
+          <a href="index.html#about">About</a>
+          <a href="index.html#stories">Stories</a>
       </div>
 
-      <button class="btn-2" onclick="window.location.href='signin-signup.html'">
+    </div>
+    <button class="btn-2" onclick="window.location.href='signin-signup.html'">
         <p>Contact Us</p>
         <i class="fa-solid fa-circle-arrow-right"></i>
-      </button>
+    </button>
+</div>
 
+      <div class="nav-right">
+          <div class="cart-icon-container">
+              <button class="cart-icon-btn" onclick="toggleCart()">
+                  <i class="fas fa-shopping-cart"></i>
+                  <span class="cart-count">0</span>
+              </button>
+              <div class="cart-dropdown">
+                  <div class="cart-header">
+                      <h3>Shopping Cart</h3>
+                      <button class="cart-close" onclick="toggleCart()">
+                          <i class="fas fa-times"></i>
+                      </button>
+                  </div>
+                  <div class="cart-items">
+                      <!-- Cart items will be added here dynamically -->
+                  </div>
+                  <div class="cart-footer">
+                      <div class="cart-total">
+                          <span>Total:</span>
+                          <span class="cart-total-amount">₱0.00</span>
+                      </div>
+                      <button class="checkout-btn" onclick="showCheckoutForm()">Checkout</button>
+                  </div>
+              </div>
+        
+  
       <div class="btn">
-        <i class="fas fa-bars menu-btn"></i>
+          <i class="fas fa-bars menu-btn"></i>
       </div>
-    </nav>
+  </nav>
 
     <!-- Shop Content -->
-    <div class="shop-container">
-      <div class="shop-header">
-        <h1>Pet Shop</h1>
-        <p>Everything your furry friend needs</p>
-      </div>
+<div class="shop-container">
+  <div class="shop-header">
+      <h1>Pet Shop</h1>
+      <p>Everything your furry friend needs</p>
+  </div>
 
-      <div class="categories">
-        <button class="category-btn active">All Products</button>
-        <button class="category-btn">Food</button>
-        <button class="category-btn">Toys</button>
-        <button class="category-btn">Accessories</button>
-        <button class="category-btn">Care</button>
-      </div>
+  <div class="categories">
+      <button class="category-btn active" data-category="all">All Products</button>
+      <button class="category-btn" data-category="food">Food</button>
+      <button class="category-btn" data-category="toys">Toys</button>
+      <button class="category-btn" data-category="accessories">Accessories</button>
+      <button class="category-btn" data-category="care">Care</button>
+  </div>
 
-      <div class="products-grid">
-        <!-- Product Card -->
-        <div class="product-card">
+  <div class="products-grid">
+      <!-- Food Products -->
+      <div class="product-card" data-category="food">
           <div class="product-image">
-            <img src="/api/placeholder/200/200" alt="Premium Dog Food" />
+              <img src="Img/dog food.png" alt="Premium Dog Food" />
           </div>
           <h3 class="product-title">Premium Dog Food</h3>
-          <p class="product-price">₱29.99</p>
+          <p class="product-description">High-quality nutrition for your dog</p>
+          <p class="product-price">₱599.99</p>
           <div class="product-buttons">
-            <button class="btn-3">Purchase</button>
-            <button class="btn-3 btn-transparent">Add to Cart</button>
+              <button class="btn-3" onclick="handlePurchase(this.closest('.product-card'))">Purchase</button>
+              <button class="btn-3 btn-transparent" onclick="addToCart(this.closest('.product-card'))">Add to Cart</button>
           </div>
-        </div>
+      </div>
 
-        <!-- More Product Cards -->
-        <div class="product-card">
+      <!-- Toy Products -->
+      <div class="product-card" data-category="toys">
           <div class="product-image">
-            <img src="/api/placeholder/200/200" alt="Interactive Cat Toy" />
+              <img src="Img/cattoy.png" alt="Interactive Cat Toy" />
           </div>
           <h3 class="product-title">Interactive Cat Toy</h3>
-          <p class="product-price">₱14.99</p>
+          <p class="product-description">Keep your cat entertained for hours</p>
+          <p class="product-price">₱299.99</p>
           <div class="product-buttons">
-            <button class="btn-3">Purchase</button>
-            <button class="btn-3 btn-transparent">Add to Cart</button>
+              <button class="btn-3" onclick="handlePurchase(this.closest('.product-card'))">Purchase</button>
+              <button class="btn-3 btn-transparent" onclick="addToCart(this.closest('.product-card'))">Add to Cart</button>
           </div>
-        </div>
+      </div>
 
-        <div class="product-card">
+      <!-- Accessories Products -->
+      <div class="product-card" data-category="accessories">
           <div class="product-image">
-            <img src="/api/placeholder/200/200" alt="Pet Bed" />
+              <img src="Img/catbed.png" alt="Cozy Pet Bed" />
           </div>
           <h3 class="product-title">Cozy Pet Bed</h3>
-          <p class="product-price">₱39.99</p>
+          <p class="product-description">Comfortable bed for peaceful sleep</p>
+          <p class="product-price">₱899.99</p>
           <div class="product-buttons">
-            <button class="btn-3">Purchase</button>
-            <button class="btn-3 btn-transparent">Add to Cart</button>
+              <button class="btn-3" onclick="handlePurchase(this.closest('.product-card'))">Purchase</button>
+              <button class="btn-3 btn-transparent" onclick="addToCart(this.closest('.product-card'))">Add to Cart</button>
           </div>
-        </div>
       </div>
-    </div>
 
-    <!-- Cart Counter -->
-    <div class="cart-count" onclick="toggleCart()">0</div>
+      <!-- Care Products -->
+      <div class="product-card" data-category="care">
+          <div class="product-image">
+              <img src="Img/petgroomingkit.png" alt="Pet Grooming Kit" />
+          </div>
+          <h3 class="product-title">Pet Grooming Kit</h3>
+          <p class="product-description">Complete grooming solution</p>
+          <p class="product-price">₱799.99</p>
+          <div class="product-buttons">
+              <button class="btn-3" onclick="handlePurchase(this.closest('.product-card'))">Purchase</button>
+              <button class="btn-3 btn-transparent" onclick="addToCart(this.closest('.product-card'))">Add to Cart</button>
+          </div>
+      </div>
+  </div>
+</div>
 
-    <!-- Cart Modal -->
-    <div class="cart-modal">
-      <div class="cart-header">
-        <h2>Your Cart</h2>
-        <span class="cart-close" onclick="toggleCart()">&times;</span>
-      </div>
-      <div class="cart-items">
-        <!-- Cart items will be dynamically added here -->
-      </div>
-      <div class="cart-summary">
-        <div class="cart-total">
+<!-- Cart Counter -->
+<div class="cart-count" onclick="toggleCart()">0</div>
+
+<!-- Cart Modal -->
+<div class="cart-modal">
+  <div class="cart-header">
+      <h2>Your Cart</h2>
+      <span class="cart-close" onclick="toggleCart()">&times;</span>
+  </div>
+  <div class="cart-items">
+      <!-- Cart items will be dynamically added here -->
+  </div>
+  <div class="cart-summary">
+      <div class="cart-total">
           <span>Total:</span>
           <span class="cart-total-amount">₱0.00</span>
-        </div>
-        <button class="checkout-btn" onclick="showCheckoutForm()">Proceed to Checkout</button>
       </div>
-    </div>
+      <button class="checkout-btn" onclick="showCheckoutForm()">Proceed to Checkout</button>
+  </div>
+</div>
 
-    <!-- Checkout Form -->
-    <div class="modal-overlay">
-      <div class="checkout-form">
-        <h2>Checkout</h2>
-        <div class="success-message">
-          <i class="fas fa-check-circle" style="font-size: 48px; color: #4caf50; margin-bottom: 15px;"></i>
+<!-- Checkout Form -->
+<div class="modal-overlay">
+  <div class="checkout-form">
+      <h2>Checkout</h2>
+      <div class="success-message">
+          <i class="fas fa-check-circle"></i>
           <h3>Order Placed Successfully!</h3>
           <p>Thank you for your purchase. You will receive a confirmation email shortly.</p>
-        </div>
-        <div class="order-summary">
-          <h3>Order Summary</h3>
+      </div>
+      <div class="order-summary">
           <!-- Order summary will be dynamically added here -->
-        </div>
-        <form id="checkoutForm" onsubmit="processCheckout(event)">
+      </div>
+      <form id="checkoutForm" onsubmit="processCheckout(event)">
           <div class="form-group">
-            <label for="name">Full Name</label>
-            <input type="text" id="name" required>
+              <label for="name">Full Name</label>
+              <input type="text" id="name" required>
+          </div>
+          <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" required>
+          </div>
+          <div class="form-group">
+              <label for="address">Delivery Address</label>
+              <input type="text" id="address" required>
+          </div>
+          <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" required>
+          </div>
+          <div class="form-group">
+              <label for="payment">Payment Method</label>
+              <select id="payment" required>
+                  <option value="">Select payment method</option>
+                  <option value="card">Credit/Debit Card</option>
+                  <option value="gcash">GCash</option>
+                  <option value="cod">Cash on Delivery</option>
+              </select>
+          </div>
+          <button type="submit" class="checkout-btn">Place Order</button>
+      </form>
+  </div>
+</div>
